@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.realarmaansidhu/tryhackme-mcp",
+  "title": "TryHackMe",
+  "description": "Unofficial MCP server for TryHackMe: rooms, tasks, paths, profiles, progress, and lab machines.",
+  "repository": {
+    "url": "https://github.com/realarmaansidhu/tryhackme-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "tryhackme-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "THM_SESSION",
+          "description": "Optional. Value of your tryhackme.com connect.sid cookie; unlocks account tools.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "THM_ALLOW_WRITES",
+          "description": "Optional. Set to 1 to enable tools that change your account (machines, votes, joining rooms).",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

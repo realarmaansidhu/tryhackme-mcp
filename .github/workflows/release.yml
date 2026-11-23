@@ -1,0 +1,55 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write   # create the GitHub Release
+  id-token: write   # PyPI trusted publishing + MCP Registry OIDC login
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check tag matches versions
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          grep -q "^version = \"$TAG\"" pyproject.toml || { echo "pyproject.toml version != $TAG"; exit 1; }
+          test "$(jq -r .version server.json)" = "$TAG" || { echo "server.json version != $TAG"; exit 1; }
+          test "$(jq -r .version manifest.json)" = "$TAG" || { echo "manifest.json version != $TAG"; exit 1; }
+
+      - name: Test
+        run: |
+          uv sync --extra dev
+          uv run pytest -q
+
+      - name: Build
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Build Claude Desktop bundle (.mcpb)
+        run: npx -y @anthropic-ai/mcpb pack . "tryhackme-mcp-${GITHUB_REF_NAME}.mcpb"
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+            tryhackme-mcp-*.mcpb
+          generate_release_notes: true
+
+      - name: Publish to the MCP Registry
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish

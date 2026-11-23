@@ -1,0 +1,12 @@
+.git/
+.github/
+.venv/
+tests/
+docs/
+examples/
+dist/
+*.mcpb
+.env
+.pytest_cache/
+__pycache__/
+uv.lock

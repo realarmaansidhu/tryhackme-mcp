@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "tryhackme": {
+      "command": "/absolute/path/to/uv",
+      "args": ["run", "--directory", "/absolute/path/to/tryhackme-mcp", "tryhackme-mcp"],
+      "env": {
+        "THM_SESSION": "your_connect_sid_here",
+        "THM_ALLOW_WRITES": "1"
+      }
+    }
+  }
+}

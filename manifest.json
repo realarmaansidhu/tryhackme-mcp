@@ -1,0 +1,46 @@
+{
+  "manifest_version": "0.4",
+  "name": "tryhackme-mcp",
+  "display_name": "TryHackMe",
+  "version": "0.1.0",
+  "description": "Search TryHackMe rooms, study tasks, follow paths, check your progress, and manage lab machines.",
+  "long_description": "Unofficial MCP server for TryHackMe. Public content works without login. Add your connect.sid session cookie for your stats, path progress and recommendations. Account-changing tools (machines, votes, joining rooms) stay off unless you enable them.",
+  "author": { "name": "Armaan Sidhu", "url": "https://github.com/realarmaansidhu" },
+  "repository": { "type": "git", "url": "https://github.com/realarmaansidhu/tryhackme-mcp" },
+  "homepage": "https://github.com/realarmaansidhu/tryhackme-mcp",
+  "license": "MIT",
+  "keywords": ["tryhackme", "cybersecurity", "learning", "ctf"],
+  "server": {
+    "type": "uv",
+    "entry_point": "mcpb_main.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "${__dirname}/mcpb_main.py"],
+      "env": {
+        "THM_SESSION": "${user_config.thm_session}",
+        "THM_ALLOW_WRITES": "${user_config.allow_writes}"
+      }
+    }
+  },
+  "user_config": {
+    "thm_session": {
+      "type": "string",
+      "title": "TryHackMe session cookie (connect.sid)",
+      "description": "Optional. From tryhackme.com: DevTools > Application > Cookies > connect.sid. Leave empty for public content only.",
+      "sensitive": true,
+      "required": false
+    },
+    "allow_writes": {
+      "type": "boolean",
+      "title": "Allow account changes",
+      "description": "Enable tools that start/stop machines, vote and join rooms.",
+      "default": false
+    }
+  },
+  "tools_generated": true,
+  "prompts_generated": true,
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "python": ">=3.10" }
+  }
+}

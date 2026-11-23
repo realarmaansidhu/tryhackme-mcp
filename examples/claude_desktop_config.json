@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "tryhackme": {
+      "command": "uvx",
+      "args": ["tryhackme-mcp"],
+      "env": {
+        "THM_SESSION": "your_connect_sid_here",
+        "THM_ALLOW_WRITES": "0"
+      }
+    }
+  }
+}

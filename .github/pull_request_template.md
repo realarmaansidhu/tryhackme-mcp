@@ -1,0 +1,4 @@
+- [ ] `uv run pytest -q` passes
+- [ ] New tools have a mocked test and a row in README + docs/API.md
+- [ ] Read-only tools use `@tool()`; account-changing tools use `@write_tool()`
+- [ ] No cookies, tokens or personal data in code, tests or fixtures
